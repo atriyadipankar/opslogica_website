@@ -10,22 +10,26 @@ import TechStackSection from "@/components/TechStackSection";
 import CTABanner from "@/components/CTABanner";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import ThreeBackground from "@/components/ThreeBackground";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <Navbar />
-      <HeroSection />
-      <TrustedBy />
-      <AboutSection />
-      <ServicesSection />
-      <PricingSection />
-      <PortfolioSection />
-      <TestimonialsSection />
-      <TechStackSection />
-      <CTABanner />
-      <ContactSection />
-      <Footer />
+      <ThreeBackground />
+      <div className="relative z-10">
+        <Navbar />
+        <HeroSection />
+        <TrustedBy />
+        <AboutSection />
+        <ServicesSection />
+        <PricingSection />
+        <PortfolioSection />
+        <TestimonialsSection />
+        <TechStackSection />
+        <CTABanner />
+        <ContactSection />
+        <Footer />
+      </div>
     </div>
   );
 };
