@@ -6,50 +6,50 @@
 
 @layer base {
   :root {
-    --background: 0 0% 5%;
-    --foreground: 0 0% 95%;
+    --background: 0 0% 2%;
+    --foreground: 0 0% 92%;
 
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 92%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 92%;
 
-    --primary: 38 60% 55%;
-    --primary-foreground: 0 0% 5%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 2%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 85%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 70%;
 
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 55%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 38 60% 55%;
-    --accent-foreground: 0 0% 5%;
+    --accent: 0 0% 100%;
+    --accent-foreground: 0 0% 2%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 16%;
-    --input: 0 0% 16%;
-    --ring: 38 60% 55%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 0 0% 100%;
 
     --radius: 0.75rem;
 
-    --navy: 0 0% 5%;
-    --navy-light: 0 0% 8%;
-    --navy-lighter: 0 0% 12%;
-    --cyan: 38 60% 55%;
-    --cyan-glow: 38 80% 65%;
+    --navy: 0 0% 2%;
+    --navy-light: 0 0% 6%;
+    --navy-lighter: 0 0% 10%;
+    --cyan: 0 0% 100%;
+    --cyan-glow: 0 0% 80%;
 
-    --sidebar-background: 0 0% 5%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 38 60% 55%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 16%;
-    --sidebar-ring: 38 60% 55%;
+    --sidebar-background: 0 0% 2%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 2%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 0 0% 100%;
   }
 }
 
@@ -73,15 +73,15 @@
 
 @layer components {
   .glass-card {
-    @apply bg-card/40 backdrop-blur-xl border border-border/40 rounded-xl;
+    @apply bg-card/30 backdrop-blur-xl border border-border/30 rounded-xl;
   }
 
   .glass-card-hover {
-    @apply glass-card transition-all duration-500 hover:border-primary/40 hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.2)];
+    @apply glass-card transition-all duration-500 hover:border-foreground/20 hover:shadow-[0_0_60px_-12px_rgba(255,255,255,0.06)];
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--cyan))] via-[hsl(var(--cyan-glow))] to-[hsl(var(--cyan))];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-foreground via-muted-foreground to-foreground;
   }
 
   .section-padding {
@@ -89,10 +89,10 @@
   }
 
   .glow-button {
-    @apply bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-lg transition-all duration-500 hover:shadow-[0_0_30px_-3px_hsl(var(--primary)/0.4)] hover:scale-105;
+    @apply bg-foreground text-background font-semibold px-6 py-3 rounded-lg transition-all duration-500 hover:shadow-[0_0_30px_-3px_rgba(255,255,255,0.15)] hover:scale-105;
   }
 
   .outline-button {
-    @apply border border-primary/40 text-primary font-semibold px-6 py-3 rounded-lg transition-all duration-500 hover:bg-primary/10 hover:border-primary;
+    @apply border border-foreground/30 text-foreground font-semibold px-6 py-3 rounded-lg transition-all duration-500 hover:bg-foreground/5 hover:border-foreground/60;
   }
 }
