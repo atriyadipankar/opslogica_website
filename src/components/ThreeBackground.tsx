@@ -16,32 +16,35 @@ const ThreeBackground = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
+    renderer.toneMappingExposure = window.innerWidth < 768 ? 1.4 : 1.0;
+
+    // Detect mobile
+    const isMobile = window.innerWidth < 768;
 
     // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
+    scene.background = new THREE.Color(isMobile ? 0x111111 : 0x000000);
 
     // Camera
     const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(0, -0.02, 8.4);
 
-    // Lights
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    // Lights — brighter on mobile
+    const dirLight = new THREE.DirectionalLight(0xffffff, isMobile ? 2.0 : 1.2);
     dirLight.position.set(4.1, 4.16, 4.19);
     scene.add(dirLight);
 
-    const spotLight = new THREE.SpotLight(0xffffff, 2.0, 30, Math.PI / 4, 0.5);
+    const spotLight = new THREE.SpotLight(0xffffff, isMobile ? 3.0 : 2.0, 30, Math.PI / 4, 0.5);
     spotLight.position.set(0.09, -2.55, -4.06);
     spotLight.rotation.x = 1.92;
     scene.add(spotLight);
 
-    scene.add(new THREE.AmbientLight(0x222222, 0.5));
+    scene.add(new THREE.AmbientLight(isMobile ? 0x444444 : 0x222222, isMobile ? 1.0 : 0.5));
 
-    // Background plane
+    // Background plane — lighter on mobile
     const bgMesh = new THREE.Mesh(
       new THREE.PlaneGeometry(27, 15.5),
-      new THREE.MeshStandardMaterial({ color: 0x2c2c2c, metalness: 0.41, roughness: 0.64 })
+      new THREE.MeshStandardMaterial({ color: isMobile ? 0x3a3a3a : 0x2c2c2c, metalness: 0.41, roughness: 0.64 })
     );
     bgMesh.position.z = -10.4;
     scene.add(bgMesh);
@@ -131,6 +134,8 @@ const ThreeBackground = () => {
     };
   }, []);
 
+  const isMobileView = typeof window !== "undefined" && window.innerWidth < 768;
+
   return (
     <>
       <canvas
@@ -163,13 +168,15 @@ const ThreeBackground = () => {
           pointerEvents: "none",
         }}
       />
-      {/* Vignette */}
+      {/* Vignette — softer on mobile */}
       <div
         style={{
           position: "fixed",
           inset: 0,
           zIndex: 1,
-          background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.7) 100%)",
+          background: isMobileView
+            ? "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.4) 100%)"
+            : "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.7) 100%)",
           pointerEvents: "none",
         }}
       />
