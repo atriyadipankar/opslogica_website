@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const badges = ["AI Automation", "Web Development", "Mobile Apps", "Business Automation"];
 
@@ -55,12 +56,12 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="#services" className="glow-button flex items-center gap-2 text-base">
+            <Link to="/services" className="glow-button flex items-center gap-2 text-base">
               Explore Our Services <ArrowRight className="w-4 h-4" />
-            </a>
-            <a href="#portfolio" className="outline-button flex items-center gap-2 text-base">
+            </Link>
+            <Link to="/portfolio" className="outline-button flex items-center gap-2 text-base">
               <Play className="w-4 h-4" /> View Our Work
-            </a>
+            </Link>
           </div>
         </motion.div>
 

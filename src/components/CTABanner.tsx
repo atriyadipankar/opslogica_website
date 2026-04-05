@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CTABanner = () => {
   const ref = useRef(null);
@@ -25,9 +26,9 @@ const CTABanner = () => {
         <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
           Let's discuss your project — free discovery call, no commitment.
         </p>
-        <a href="#contact" className="glow-button inline-flex items-center gap-2 text-base">
+        <Link to="/contact" className="glow-button inline-flex items-center gap-2 text-base">
           Schedule a Free Call <ArrowRight className="w-4 h-4" />
-        </a>
+        </Link>
       </motion.div>
     </section>
   );

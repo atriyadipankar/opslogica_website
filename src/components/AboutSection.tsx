@@ -51,12 +51,12 @@ const AboutSection = () => {
           className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-20"
         >
           <div>
-            <p className="text-primary text-sm font-semibold tracking-wide uppercase mb-3">About OpsLogica</p>
+            <p className="text-primary text-sm font-semibold tracking-wide uppercase mb-3">About OPSLOGICA</p>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
               Bridging Technology & <span className="gradient-text">Business Outcomes</span>
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              OpsLogica exists to bridge the gap between complex technology and real business outcomes — through intelligent automation, clean code, and end-to-end digital solutions.
+              OPSLOGICA exists to bridge the gap between complex technology and real business outcomes — through intelligent automation, clean code, and end-to-end digital solutions.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Founded by engineers and strategists who've shipped products across fintech, healthcare, logistics, and SaaS — we bring deep technical expertise with a relentless focus on impact.

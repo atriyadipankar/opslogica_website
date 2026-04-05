@@ -1,31 +1,12 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Mail, Phone, MapPin, Linkedin, Send } from "lucide-react";
-import { toast } from "sonner";
+import { useContactForm } from "@/lib/useContactForm";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [form, setForm] = useState({ name: "", company: "", email: "", phone: "", service: "", budget: "", message: "" });
-  const [sending, setSending] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name.trim() || !form.email.trim()) {
-      toast.error("Please fill in all required fields.");
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
-    setSending(true);
-    setTimeout(() => {
-      setSending(false);
-      toast.success("Message sent! We'll get back to you within 24 hours.");
-      setForm({ name: "", company: "", email: "", phone: "", service: "", budget: "", message: "" });
-    }, 1500);
-  };
+  const { form, setForm, sending, handleSubmit } = useContactForm("homepage");
 
   const inputClass = "w-full px-4 py-3 rounded-lg bg-secondary border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all text-sm";
   const labelClass = "text-sm font-medium mb-1.5 block";
@@ -48,7 +29,7 @@ const ContactSection = () => {
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0"><Mail className="w-4 h-4 text-primary" /></div>
-                hello@opslogica.com
+                hello@OPSLOGICA.com
               </div>
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0"><Phone className="w-4 h-4 text-primary" /></div>
@@ -60,7 +41,7 @@ const ContactSection = () => {
               </div>
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0"><Linkedin className="w-4 h-4 text-primary" /></div>
-                linkedin.com/company/opslogica
+                linkedin.com/company/OPSLOGICA
               </div>
             </div>
           </motion.div>

@@ -1,26 +1,33 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link, useLocation } from "react-router-dom";
+import OpsLogicaLogo from "./OpsLogicaLogo";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Testimonials", href: "/testimonials" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   return (
     <nav
@@ -29,38 +36,30 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4">
-        <a href="#home" className="flex items-center group">
-          <span className="text-white text-xl md:text-2xl tracking-[0.25em] font-light" style={{ fontFamily: "'Century Gothic', 'Avant Garde', sans-serif" }}>
-            OPSL
-          </span>
-          {/* Cloud + Gear icon replacing the "O" */}
-          <svg className="w-6 h-6 md:w-7 md:h-7 text-white mx-[1px] -mt-1" viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M48 28a12 12 0 00-11.3-8A14 14 0 0013 28a10 10 0 001 20h34a8 8 0 000-16z" fill="none" stroke="currentColor" strokeWidth="2.5"/>
-            <circle cx="32" cy="36" r="8" fill="none" stroke="currentColor" strokeWidth="2.5"/>
-            <path d="M32 28v3M32 41v3M24 36h3M37 36h3M26.3 30.3l2.1 2.1M35.6 39.6l2.1 2.1M26.3 41.7l2.1-2.1M35.6 32.4l2.1-2.1" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M29 35l3 3 3-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span className="text-white text-xl md:text-2xl tracking-[0.25em] font-light" style={{ fontFamily: "'Century Gothic', 'Avant Garde', sans-serif" }}>
-            GICA
-          </span>
-        </a>
+        <Link to="/" className="flex items-center group">
+          <OpsLogicaLogo />
+        </Link>
 
         <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
-              href={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              to={link.href}
+              className={`text-sm transition-colors ${
+                location.pathname === link.href
+                  ? "text-foreground font-medium"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
 
         <div className="hidden lg:block">
-          <a href="#contact" className="glow-button text-sm">
+          <Link to="/contact" className="glow-button text-sm">
             Get a Free Consultation
-          </a>
+          </Link>
         </div>
 
         <button
@@ -82,18 +81,21 @@ const Navbar = () => {
           >
             <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors py-2"
-                  onClick={() => setMobileOpen(false)}
+                  to={link.href}
+                  className={`transition-colors py-2 ${
+                    location.pathname === link.href
+                      ? "text-foreground font-medium"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
-              <a href="#contact" className="glow-button text-sm text-center mt-2" onClick={() => setMobileOpen(false)}>
+              <Link to="/contact" className="glow-button text-sm text-center mt-2">
                 Get a Free Consultation
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}

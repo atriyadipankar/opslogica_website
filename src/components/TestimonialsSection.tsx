@@ -1,24 +1,36 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
-const testimonials = [
-  { name: "Sarah Mitchell", role: "CTO", company: "TechNova", text: "OpsLogica transformed our entire workflow with their AI automation solutions. Our team's productivity increased by 40% within the first quarter." },
-  { name: "James Chen", role: "Founder", company: "ScaleUp Inc", text: "Their end-to-end development approach saved us months. From MVP to launch, OpsLogica delivered a polished product that our investors loved." },
-  { name: "Priya Sharma", role: "Operations Lead", company: "LogiTrack", text: "The business automation suite they built eliminated 30+ hours of manual work per week. ROI was visible within the first month." },
-  { name: "Michael Torres", role: "CEO", company: "FinEdge", text: "Working with OpsLogica felt like having an in-house tech team. Their transparency and agile process kept us in the loop at every step." },
-  { name: "Emily Rodriguez", role: "VP Engineering", company: "DataBridge", text: "As a partner firm, we've co-delivered multiple projects with OpsLogica. Their AI expertise and code quality are genuinely world-class." },
-  { name: "Alex Kim", role: "Product Manager", company: "NexGen AI", text: "They didn't just build what we asked for — they challenged our assumptions and delivered something far better. True strategic partners." },
-  { name: "David Park", role: "Director", company: "CloudSync", text: "The mobile app OpsLogica built exceeded our expectations. Clean UI, fast performance, and they even handled the App Store submission." },
-  { name: "Lisa Wang", role: "COO", company: "VeloSoft", text: "Our CRM automation project was complex, but OpsLogica navigated it flawlessly. Integration with our existing tools was seamless." },
-];
+interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  quote: string;
+  rating: number;
+}
 
 const TestimonialsSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [current, setCurrent] = useState(0);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("testimonials")
+      .select("id, name, role, company, quote, rating")
+      .eq("visible", true)
+      .order("sort_order")
+      .then(({ data }) => { if (data) setTestimonials(data); });
+  }, []);
+
   const perPage = 3;
-  const maxPage = Math.ceil(testimonials.length / perPage) - 1;
+  const maxPage = Math.max(0, Math.ceil(testimonials.length / perPage) - 1);
+
+  if (!testimonials.length) return null;
 
   return (
     <section id="testimonials" className="section-padding" ref={ref}>
@@ -33,7 +45,7 @@ const TestimonialsSection = () => {
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           {testimonials.slice(current * perPage, current * perPage + perPage).map((t, i) => (
             <motion.div
-              key={t.name + current}
+              key={t.id + current}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
@@ -41,11 +53,11 @@ const TestimonialsSection = () => {
             >
               <Quote className="w-8 h-8 text-primary/20 absolute top-4 right-4" />
               <div className="flex gap-1 mb-4">
-                {[...Array(5)].map((_, j) => (
+                {[...Array(t.rating)].map((_, j) => (
                   <Star key={j} className="w-4 h-4 text-primary fill-primary" />
                 ))}
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6">"{t.text}"</p>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-6">"{t.quote}"</p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-heading font-bold text-sm">
                   {t.name.charAt(0)}

@@ -1,36 +1,43 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Check, Star } from "lucide-react";
+import { Link } from "react-router-dom";
+import { supabase } from "@/lib/supabase";
 
-const tabs = ["AI Solutions", "Software Dev", "Web & Mobile", "Business Automation"];
-
-const pricingData: Record<string, { name: string; price: string; highlighted?: boolean; features: string[] }[]> = {
-  "AI Solutions": [
-    { name: "Starter", price: "From $2,500", features: ["Single AI model or chatbot", "Basic LLM integration", "Standard analytics dashboard", "2 weeks turnaround", "Email support"] },
-    { name: "Growth", price: "From $7,500", highlighted: true, features: ["Multiple AI workflows", "Advanced LLM integrations", "Custom analytics & reporting", "Dedicated project manager", "Priority support", "4-week delivery"] },
-    { name: "Enterprise", price: "Custom Pricing", features: ["Full AI infrastructure", "Custom ML model training", "Enterprise-grade security", "Dedicated team & SLA", "24/7 support", "Ongoing optimization"] },
-  ],
-  "Software Dev": [
-    { name: "Starter", price: "From $3,000", features: ["MVP development", "Up to 5 core features", "Basic API integration", "Responsive design", "30-day bug support"] },
-    { name: "Growth", price: "From $10,000", highlighted: true, features: ["Full-featured application", "Complex API architecture", "Database optimization", "CI/CD pipeline setup", "Dedicated PM", "90-day support"] },
-    { name: "Enterprise", price: "Custom Pricing", features: ["Large-scale platform", "Microservices architecture", "High-availability setup", "Dedicated dev team", "SLA & compliance", "Ongoing maintenance"] },
-  ],
-  "Web & Mobile": [
-    { name: "Starter", price: "From $2,000", features: ["Landing page or simple site", "Mobile responsive", "Basic SEO setup", "Contact form", "2-week delivery"] },
-    { name: "Growth", price: "From $6,000", highlighted: true, features: ["Multi-page web app", "Mobile app (iOS or Android)", "UI/UX design included", "CMS integration", "Analytics setup", "60-day support"] },
-    { name: "Enterprise", price: "Custom Pricing", features: ["Cross-platform apps", "Custom design system", "Performance optimization", "App Store deployment", "Dedicated team", "Ongoing updates"] },
-  ],
-  "Business Automation": [
-    { name: "Starter", price: "From $1,500", features: ["Up to 3 workflow automations", "Zapier/Make setup", "Basic reporting", "Email automation", "1-week delivery"] },
-    { name: "Growth", price: "From $5,000", highlighted: true, features: ["Up to 10 automations", "CRM/ERP integration", "Custom dashboards", "Advanced workflows", "Dedicated PM", "Training included"] },
-    { name: "Enterprise", price: "Custom Pricing", features: ["Unlimited automations", "Full system integration", "Custom automation platform", "Dedicated team & SLA", "24/7 monitoring", "Continuous optimization"] },
-  ],
-};
+interface PricingPlan {
+  id: string;
+  name: string;
+  category: string;
+  price: string;
+  features: string[];
+  highlighted: boolean;
+}
 
 const PricingSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [plans, setPlans] = useState<PricingPlan[]>([]);
+  const [tabs, setTabs] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState("");
+
+  useEffect(() => {
+    supabase
+      .from("pricing_plans")
+      .select("id, name, category, price, features, highlighted")
+      .order("sort_order")
+      .then(({ data }) => {
+        if (data) {
+          setPlans(data);
+          const categories = [...new Set(data.map((p) => p.category))];
+          setTabs(categories);
+          setActiveTab(categories[0] || "");
+        }
+      });
+  }, []);
+
+  const activePlans = plans.filter((p) => p.category === activeTab);
+
+  if (!plans.length) return null;
 
   return (
     <section id="pricing" className="section-padding" ref={ref}>
@@ -57,9 +64,9 @@ const PricingSection = () => {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {pricingData[activeTab].map((plan, i) => (
+          {activePlans.map((plan, i) => (
             <motion.div
-              key={plan.name}
+              key={plan.id}
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.1 }}
@@ -77,21 +84,21 @@ const PricingSection = () => {
               <h3 className="text-lg font-heading font-bold mb-1">{plan.name}</h3>
               <p className="text-2xl font-heading font-bold gradient-text mb-6">{plan.price}</p>
               <ul className="space-y-3 mb-8">
-                {plan.features.map((f) => (
+                {plan.features?.map((f) => (
                   <li key={f} className="flex items-start gap-2 text-sm text-muted-foreground">
                     <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                     {f}
                   </li>
                 ))}
               </ul>
-              <a
-                href="#contact"
+              <Link
+                to="/contact"
                 className={`block text-center py-3 rounded-lg font-semibold text-sm transition-all ${
                   plan.highlighted ? "glow-button" : "outline-button"
                 }`}
               >
                 {plan.name === "Enterprise" ? "Talk to Us" : "Get Started"}
-              </a>
+              </Link>
             </motion.div>
           ))}
         </div>
