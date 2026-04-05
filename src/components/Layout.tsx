@@ -8,7 +8,13 @@ const Layout = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    // Temporarily disable smooth scroll so navigation jumps to top instantly
+    document.documentElement.style.scrollBehavior = "auto";
     window.scrollTo(0, 0);
+    // Re-enable smooth scroll for in-page anchor links
+    requestAnimationFrame(() => {
+      document.documentElement.style.scrollBehavior = "smooth";
+    });
   }, [pathname]);
 
   return (
