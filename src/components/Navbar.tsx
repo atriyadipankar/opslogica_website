@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
@@ -29,12 +29,19 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4">
-        <a href="#home" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
-            <Zap className="w-4 h-4 text-primary" />
-          </div>
-          <span className="text-xl font-heading font-bold">
-            Ops<span className="gradient-text">Logica</span>
+        <a href="#home" className="flex items-center group">
+          <span className="text-white text-xl md:text-2xl tracking-[0.25em] font-light" style={{ fontFamily: "'Century Gothic', 'Avant Garde', sans-serif" }}>
+            OPSL
+          </span>
+          {/* Cloud + Gear icon replacing the "O" */}
+          <svg className="w-6 h-6 md:w-7 md:h-7 text-white mx-[1px] -mt-1" viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 28a12 12 0 00-11.3-8A14 14 0 0013 28a10 10 0 001 20h34a8 8 0 000-16z" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+            <circle cx="32" cy="36" r="8" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+            <path d="M32 28v3M32 41v3M24 36h3M37 36h3M26.3 30.3l2.1 2.1M35.6 39.6l2.1 2.1M26.3 41.7l2.1-2.1M35.6 32.4l2.1-2.1" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M29 35l3 3 3-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="text-white text-xl md:text-2xl tracking-[0.25em] font-light" style={{ fontFamily: "'Century Gothic', 'Avant Garde', sans-serif" }}>
+            GICA
           </span>
         </a>
 
